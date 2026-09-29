@@ -23,6 +23,15 @@ app.use(express.static(__dirname));
 
 app.disable("x-powered-by");
 
+try {
+  db.exec(`
+    ALTER TABLE posts
+    ADD COLUMN media TEXT DEFAULT ''
+  `);
+} catch (error) {
+  // media column already exists
+}
+
 const db = new DatabaseSync(
   path.join(__dirname, "love-life.db")
 );
