@@ -1,0 +1,3327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RamX</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f5f7;
+  color:#222;
+}
+header{
+  background:#fff;
+  border-bottom:1px solid #ddd;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.logo{
+  font-size:24px;
+  font-weight:bold;
+}
+button{
+  border:0;
+  border-radius:10px;
+  padding:11px 16px;
+  cursor:pointer;
+  background:#222;
+  color:#fff;
+}
+button:hover{opacity:.9}
+input,textarea{
+  width:100%;
+  padding:12px;
+  margin:6px 0 10px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  font-size:15px;
+}
+textarea{min-height:90px;resize:vertical}
+.container{
+  max-width:700px;
+  margin:25px auto;
+  padding:0 15px;
+}
+.card{
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:18px;
+  box-shadow:0 2px 10px #00000010;
+}
+.center{text-align:center}
+.hidden{display:none!important}
+.small{font-size:13px;color:#777}
+.message{
+  padding:10px;
+  margin:10px 0;
+  border-radius:10px;
+  background:#f0f0f0;
+}
+.post{
+  border:1px solid #eee;
+  padding:15px;
+  border-radius:14px;
+  margin-top:12px;
+}
+.actions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+  flex-wrap:wrap;
+}
+.actions button{
+  background:#eee;
+  color:#222;
+}
+.nav{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.nav button{
+  background:#222;
+}
+.profile-name{
+  font-size:22px;
+  font-weight:bold;
+}
+
+.badge {
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 10px;
+}
+
+.badge.locked {
+  opacity: 0.5;
+}
+
+.badge.unlocked {
+  opacity: 1;
+  font-weight: bold;
+  border: 2px solid #22c55e;
+}
+
+
+</style>
+
+<style>
+@media (max-width: 600px) {
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .card {
+    width: 95%;
+    margin: 10px auto;
+    box-sizing: border-box;
+  }
+
+  input,
+  textarea,
+  button,
+  select {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+}
+</style>
+
+</head>
+
+<div id="adminPage" class="page hidden">
+  <h2>🛠️ Admin Reports</h2>
+
+  <div id="adminReports">
+    Loading reports...
+  </div>
+
+  <button onclick="showPage('feed')">← Back to Home</button>
+</div>
+
+<body>
+
+<header>
+  <div class="logo">❤️ RamX</div>
+
+  <div class="nav hidden" id="nav">
+    <button onclick="showPage('feed')">Home</button>
+    <button onclick="showPage('profile')">Profile</button>
+    <button onclick="showPage('search')">Search</button>
+    <button onclick="showPage('settings')">⚙️ Settings</button>
+    <button onclick="showPage('saved')">🔖 Saved Posts</button>
+    <button onclick="showPage('notifications')">🔔 Notifications</button>
+    <button onclick="showPage('messages')">💬 Messages</button>
+</button>
+    <button onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <div id="lovePoints" class="page">
+  <h2>⭐ Love Life Points</h2>
+
+  <p>Your Points</p>
+  <h1 id="lovePointsValue">0</h1>
+
+  
+
+  <p>Keep using Love Life positively to earn points.</p>
+
+  <button onclick="showPage('feed')">Back to Home</button>
+</div>
+
+  <div id="quietMode" class="page">
+  <h2>🔕 Quiet Mode</h2>
+
+  <p>Quiet Mode में notifications temporarily शांत रहेंगी.</p>
+
+  <button onclick="enableQuietMode(30)">
+    30 Minutes
+  </button>
+
+  <button onclick="enableQuietMode(60)">
+    1 Hour
+  </button>
+
+  <button onclick="enableQuietMode(120)">
+    2 Hours
+  </button>
+
+  <p id="quietStatus">Quiet Mode is OFF</p>
+</div>
+
+  <div id="timeDashboard" class="page">
+  <h2>⏱️ Daily Time Dashboard</h2>
+
+  <p>Today's Love Life Time</p>
+  <h3 id="todayTime">0 minutes</h3>
+
+  <p>App Opens Today: <span id="todayOpens">0</span></p>
+
+  <button onclick="showPage('feed')">Back to Home</button>
+</div>
+
+<!-- PRE LAUNCH -->
+<section id="launchPage" class="card center">
+  <h1>COMING SOON</h1>
+  <h2>❤️ RamX</h2>
+
+  <p>Be among the first Love Life users.</p>
+
+  <p>
+    <b>First 5,000 users:</b>
+    selected premium features lifetime free.
+  </p>
+
+  <hr>
+
+  <h3>Join the Waitlist</h3>
+
+  <input id="waitUsername" placeholder="Choose a username">
+  <input id="referralCode" placeholder="Referral code (optional)">
+
+  <button onclick="joinWaitlist()">Join Waitlist</button>
+
+  <div id="waitMessage"></div>
+
+  <p class="small">No payment required.</p>
+
+  <hr>
+
+  <button onclick="showLogin()">Login</button>
+  <button onclick="showSignup()">Create Account</button>
+</section>
+
+
+<!-- LOGIN -->
+<section id="loginPage" class="card hidden">
+  <h2>Login</h2>
+
+  <input id="loginUsername" placeholder="Username">
+  <input id="loginPassword" type="password" placeholder="Password">
+
+  <button onclick="login()">Login</button>
+
+  <div id="loginMessage"></div>
+
+  <p>
+    Don't have an account?
+    <button onclick="showSignup()">Create Account</button>
+  </p>
+
+  <button onclick="showLaunch()">Back</button>
+</section>
+
+
+<!-- SIGNUP -->
+<section id="signupPage" class="card hidden">
+  <h2>Create Account</h2>
+
+  <input id="signupUsername" placeholder="Username">
+  <input id="signupPassword" type="password" placeholder="Password">
+
+  <button onclick="signup()">Create Account</button>
+
+  <div id="signupMessage"></div>
+
+  <p>
+    Already have an account?
+    <button onclick="showLogin()">Login</button>
+  </p>
+
+  <button onclick="showLaunch()">Back</button>
+</section>
+
+
+<!-- APP -->
+<section id="appPage" class="hidden">
+
+  <!-- FEED -->
+  <div id="feedPage">
+
+    <div class="card">
+      <h2>Create Post</h2>
+
+      <textarea id="postContent"
+        placeholder="What's on your mind?"></textarea>
+        <input id="postMedia" type="file" accept="image/,video/"
+
+      <button onclick="createPost()">Post</button>
+
+      <div id="postMessage"></div>
+    </div>
+
+    <div class="card">
+      <h2>Love Life Feed</h2>
+
+      <div id="feed">
+        Loading...
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- PROFILE -->
+  <div id="profilePage" class="hidden">
+
+    
+
+    <div class="card">
+
+      <div class="profile-name" id="profileUsername"></div>
+
+      <p id="profileBio"></p>
+
+      <div style="display:flex;gap:20px;margin:15px 0;">
+  <div>
+    <b id="profilePostsCount">0</b>
+    <div class="small">Posts</div>
+  </div>
+
+  <div>
+    <b id="profileFollowersCount">0</b>
+    <div class="small">Followers</div>
+  </div>
+
+  <div>
+    <b id="profileFollowingCount">0</b>
+    <div class="small">Following</div>
+  </div>
+</div>
+
+      <textarea id="bioInput"
+        placeholder="Write your bio"></textarea>
+
+      <button onclick="updateProfile()">
+        Save Profile
+      </button>
+
+      <div style="margin-top:15px;">
+
+  <button onclick="showFollowers()">
+    👥 Followers
+  </button>
+
+  <button onclick="showFollowing()">
+    ➡️ Following
+  </button>
+
+</div>
+
+<div id="followLists"></div>
+
+      <div id="profileMessage"></div>
+      <h3>🔒 Message Privacy</h3>
+
+      <h3>🔐 Account Privacy</h3>
+
+      <h3>📩 Follow Requests</h3>
+
+<div id="followRequestsList">
+  Loading...</div>
+
+<select id="accountPrivacy">
+  <option value="public">Public</option>
+  <option value="private">Private</option>
+</select>
+
+<button onclick="saveAccountPrivacy()">
+  Save Account Privacy
+</button>
+
+<div id="accountPrivacyMessage"></div>
+
+<select id="messagePrivacy">
+  <option value="everyone">
+    Everyone
+  </option>
+
+  <option value="following">
+    People I follow
+  </option>
+
+  <option value="nobody">
+    Nobody
+  </option>
+</select>
+
+<button onclick="saveMessagePrivacy()">
+  Save Message Privacy
+</button>
+
+<div id="messagePrivacyMessage"></div>
+        <h3>Change Password</h3>
+
+      <input id="currentPassword"
+        type="password"
+      
+        placeholder="Current password">
+
+      <input id="newPassword"
+        type="password"
+        placeholder="New password">
+
+      <input id="confirmPassword"
+        type="password"
+        placeholder="Confirm new password">
+
+      <button onclick="changePassword()">
+        Change Password
+      </button>
+
+      <div id="passwordMessage"></div>
+
+      <div class="card">
+  <h3>🎁 My Referral Code</h3>
+  <p id="myReferralCode">F5144A7F</p>
+</div>
+
+    </div>
+
+  </div>
+
+   class="hidden">
+
+   <div id="savedPage" class="hidden"></div>
+
+   <div id="userProfilePage" class="hidden">
+
+  <div class="card">
+
+    <h2 id="userProfileUsername"></h2>
+
+    <p id="userProfileBio"></p>
+
+    <button id="userFollowButton">
+  Follow
+</button>
+
+    <button id="userFollowButton">
+  Follow
+</button>
+
+    <div id="userProfilePosts"></div>
+
+  </div>
+
+</div>
+
+  <div class="card">
+    <h2>🔖 Saved Posts</h2>
+    <div id="savedPosts"></div>
+  </div>
+
+</div>
+
+<div id="notificationsPage" class="hidden">
+
+
+  <div class="card">
+
+    <h2>🔔 Notifications</h2>
+
+    <div id="notificationsList">
+      Loading...
+    </div>
+
+  </div>
+
+</div>
+
+<div id="messagesPage" class="hidden">
+
+  <div class="card">
+
+    <h2>💬 Messages</h2>
+
+    <p>Search a user to start a conversation.</p>
+
+    <input id="messageUsername" placeholder="Username">
+
+    <button onclick="startChat()">Start Chat</button>
+
+    <div id="chatBox" class="hidden">
+
+      <h3 id="chatWith"></h3>
+
+      <div id="messagesList"></div>
+
+      <input id="messageText" placeholder="Write a message...">
+
+      <button onclick="sendMessage()">Send 💬</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- CREATOR SCHOOL -->
+<div id="creatorSchoolPage" class="hidden">
+
+  <div class="card">
+    <h2>🎓 Creator School</h2>
+
+    <p>
+      Learn how to create better content, grow your audience
+      and become a better creator on Love Life.
+    </p>
+
+    <div class="card">
+      <h3>📱 Lesson 1 — Great Content Basics</h3>
+      <p>
+        Good content should be simple, useful, interesting
+        and easy to understand.
+      </p>
+      <button onclick="openCreatorLesson(1)">
+        Start Lesson
+      </button>
+    </div>
+
+    <div class="card">
+      <h3>💡 Lesson 2 — Content Ideas</h3>
+      <p>
+        Learn how to find ideas for posts and videos.
+      </p>
+      <button onclick="openCreatorLesson(2)">
+        Start Lesson
+      </button>
+    </div>
+
+    <div class="card">
+      <h3>✍️ Lesson 3 — Better Captions</h3>
+      <p>
+        Learn how to write captions that make people
+        understand and engage with your content.
+      </p>
+      <button onclick="openCreatorLesson(3)">
+        Start Lesson
+      </button>
+    </div>
+
+    <div class="card">
+      <h3>🎥 Lesson 4 — Short Video Basics</h3>
+      <p>
+        Learn the basics of making engaging short videos.
+      </p>
+      <button onclick="openCreatorLesson(4)">
+        Start Lesson
+      </button>
+    </div>
+
+    <div class="card">
+      <h3>📈 Lesson 5 — Creator Growth</h3>
+      <p>
+        Learn consistent and healthy ways to build an audience.
+      </p>
+      <button onclick="openCreatorLesson(5)">
+        Start Lesson
+      </button>
+    </div>
+
+  </div>
+
+  <div id="creatorLesson" class="card hidden"></div>
+
+</div>
+
+<!-- AI POST & PHOTO ASSISTANCE -->
+<div id="aiAssistantPage" class="hidden">
+
+  <div class="card">
+
+    <h2>🤖 AI Post & Photo Assistance</h2>
+
+    <p>
+      Create better posts, captions and content ideas with AI assistance.
+    </p>
+
+    <div class="card">
+
+      <h3>💡 Post Ideas</h3>
+
+      <input
+        id="aiTopic"
+        type="text"
+        placeholder="Example: Study, Travel, Fitness..."
+        style="width:100%;padding:10px;box-sizing:border-box;"
+      >
+
+      <button onclick="generatePostIdeas()">
+        💡 Generate Ideas
+      </button>
+
+    </div>
+
+    <div class="card">
+
+      <h3>✍️ Caption Assistant</h3>
+
+      <textarea
+        id="aiCaption"
+        placeholder="Apni caption yahan likho..."
+        style="width:100%;min-height:100px;padding:10px;box-sizing:border-box;"
+      ></textarea>
+
+      <button onclick="improveCaption()">
+        ✨ Improve Caption
+      </button>
+
+    </div>
+
+    <div class="card">
+
+      <h3>📝 Post Writer</h3>
+
+      <textarea
+        id="aiPostTopic"
+        placeholder="Kis topic par post banana hai?"
+        style="width:100%;min-height:80px;padding:10px;box-sizing:border-box;"
+      ></textarea>
+
+      <button onclick="createPostDraft()">
+        📝 Create Post Draft
+      </button>
+
+    </div>
+
+    <div id="aiResult" class="card hidden"></div>
+
+  </div>
+
+</div>
+
+  <!-- SEARCH -->
+  <div id="searchPage" class="hidden">
+
+    <div class="card">
+
+      <h2>Search Users</h2>
+
+      <input id="searchInput"
+        placeholder="Search username">
+
+      <button onclick="searchUsers()">Search</button>
+
+      <div id="searchResults"></div>
+
+    </div>
+
+  </div>
+
+</section>
+
+</div>
+
+<div id="settingsPage" class="page hidden">
+  <div class="card">
+    <h2>⚙️ Settings</h2>
+    <p class="small">RamX settings and features</p>
+
+    <div class="actions">
+      <button onclick="showPage('timeDashboard')">⏱️ Daily Time</button>
+      <button onclick="showPage('quietMode')">🔕 Quiet Mode</button>
+      <button onclick="showPage('creatorSchool')">🎓 Creator School</button>
+      <button onclick="showPage('aiAssistant')">🤖 AI Post & Photo Assistance</button>
+      <button onclick="showPage('badges')">🏅 Badges</button>
+      <button onclick="showPage('adminPage')">🛠️ Admin</button>
+      <button onclick="logout()">🚪 Logout</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+
+let token = localStorage.getItem("loveLifeToken");
+let currentUserId = null;
+
+const $ = id => document.getElementById(id);
+
+
+/* ---------- PAGE CONTROL ---------- */
+
+function hideAll(){
+  $("launchPage").classList.add("hidden");
+  $("loginPage").classList.add("hidden");
+  $("signupPage").classList.add("hidden");
+  $("appPage").classList.add("hidden");
+}
+
+function showLaunch(){
+  hideAll();
+  $("launchPage").classList.remove("hidden");
+}
+
+
+function showSignup(){
+  hideAll();
+  $("signupPage").classList.remove("hidden");
+}
+
+function showApp(){
+  hideAll();
+  $("appPage").classList.remove("hidden");
+  $("nav").classList.remove("hidden");
+  showPage("feed");
+}
+
+function showPage(page){
+
+  $("feedPage").classList.add("hidden");
+  $("settingsPage").classList.add("hidden");
+  $("profilePage").classList.add("hidden");
+  $("searchPage").classList.add("hidden");
+  $("savedPage").classList.add("hidden");
+  $("creatorSchoolPage").classList.add("hidden");
+  $("aiAssistantPage").classList.add("hidden");
+
+  $("notificationsPage").classList.add("hidden");
+
+  $("adminPage").classList.add("hidden");
+
+  if(page === "settings"){
+  $("settingsPage").classList.remove("hidden");
+}
+
+
+  if(page === "feed"){
+    $("feedPage").classList.remove("hidden");
+    loadFeed();
+  }
+
+  if(page === "profile"){
+  $("profilePage").classList.remove("hidden");
+  loadProfile();
+  loadReferralCode();
+}
+
+if(page === "creatorSchool"){
+  $("creatorSchoolPage").classList.remove("hidden");
+}
+
+if(page === "aiAssistant"){
+  $("aiAssistantPage").classList.remove("hidden");
+}
+
+  if(page === "search"){
+    $("searchPage").classList.remove("hidden");
+  }
+
+  if(page === "saved"){
+    $("savedPage").classList.remove("hidden");
+    loadSavedPosts();
+
+    if(page === "notifications"){
+  $("notificationsPage").classList.remove("hidden");
+  loadNotifications();
+}
+
+  }if(page === "adminPage"){
+  $("adminPage").classList.remove("hidden");
+  loadAdminReports();
+}
+
+if(page === "messages"){
+
+  $("messagesPage").classList.remove("hidden");
+
+  const savedChat =
+    localStorage.getItem("loveLifeLastChat");
+
+  if(savedChat){
+
+    try{
+
+      const chat =
+        JSON.parse(savedChat);
+
+      $("messageUsername").value =
+        chat.username;
+
+      startChat();
+
+    }catch(error){
+
+      localStorage.removeItem(
+        "loveLifeLastChat"
+      );
+
+    }
+  }
+}
+}
+
+
+let currentLesson = 0;
+
+const creatorLessons = {
+
+  1: {
+    title: "📱 Lesson 1 — Great Content Basics",
+    explanation:
+      "Great content ka main goal hota hai ki viewer ko kuch interesting, useful ya meaningful mile.",
+
+    example:
+      "Example: Sirf 'Good morning ❤️' likhne ke bajay 'Aaj ka din better banane wali 3 simple habits' ek useful post idea hai.",
+
+    do:
+      "Post banane se pehle decide karo: Main viewer ko kya dena chahta hoon — information, entertainment ya inspiration?",
+
+    mistake:
+      "Ek hi post me bahut saari unrelated baatein bhar dena.",
+
+    task:
+      "Ek simple post idea likho jo kisi viewer ke kaam aa sakta hai.",
+
+    question:
+      "Good content ki ek important quality kya hai?",
+    options: [
+      "Clear aur useful hona",
+      "Bahut lamba hona",
+      "Sirf emojis hona"
+    ],
+    answer: 0
+  },
+
+  2: {
+    title: "💡 Lesson 2 — Content Ideas",
+    explanation:
+      "Content ideas tumhari daily life, interests, questions aur problems se aa sakte hain.",
+
+    example:
+      "Agar tumhe study pasand hai, idea ho sakta hai: 'Biology padhne ke 3 simple tips'.",
+
+    do:
+      "Jab bhi koi interesting idea aaye, use note kar lo. Baad me usse post ya video bana sakte ho.",
+
+    mistake:
+      "Har baar doosron ka content copy karna.",
+
+    task:
+      "Apne interest ke kisi ek topic par 3 post ideas likho.",
+
+    question:
+      "Content idea kahan se mil sakta hai?",
+    options: [
+      "Sirf celebrities se",
+      "Interests, questions aur experiences se",
+      "Sirf viral posts copy karke"
+    ],
+    answer: 1
+  },
+
+  3: {
+    title: "✍️ Lesson 3 — Better Captions",
+    explanation:
+      "Achhi caption post ka message clear karti hai aur viewer ko context deti hai.",
+
+    example:
+      "Weak: 'Nice day.'\nBetter: 'Aaj ka chhota sa moment jo pura din better bana gaya.'",
+
+    do:
+      "Caption ko simple rakho aur post se related rakho.",
+
+    mistake:
+      "Bahut lambi ya unrelated caption likhna.",
+
+    task:
+      "Apni imaginary photo ke liye ek short caption likho.",
+
+    question:
+      "Achhi caption kaisi honi chahiye?",
+    options: [
+      "Clear aur relevant",
+      "Jitni lambi ho utni better",
+      "Post se unrelated"
+    ],
+    answer: 0
+  },
+
+  4: {
+    title: "🎥 Lesson 4 — Short Video Basics",
+    explanation:
+      "Short video me shuru ke seconds important hote hain. Viewer ko quickly samajh aana chahiye ki video kis baare me hai.",
+
+    example:
+      "Video start: 'Aaj main 3 easy study tips bataunga.' Phir directly tips par jao.",
+
+    do:
+      "Ek clear topic rakho aur unnecessary parts hatao.",
+
+    mistake:
+      "Video ko bahut confusing introduction se start karna.",
+
+    task:
+      "15–30 second ke ek video ka topic aur opening line likho.",
+
+    question:
+      "Short video me kya important hai?",
+    options: [
+      "Clear topic aur focused content",
+      "Random topics",
+      "Sirf long introduction"
+    ],
+    answer: 0
+  },
+
+  5: {
+    title: "📈 Lesson 5 — Creator Growth",
+    explanation:
+      "Healthy creator growth ka matlab hai consistently useful content banana, audience ko samajhna aur time ke saath improve karna.",
+
+    example:
+      "Agar ek type ki post par audience zyada interact karti hai, tum us topic ke aur useful variations bana sakte ho.",
+
+    do:
+      "Consistency rakho, feedback dekho aur apne content ko improve karo.",
+
+    mistake:
+      "Sirf numbers dekhkar turant give up kar dena.",
+
+    task:
+      "Apne liye ek simple weekly content plan banao.",
+
+    question:
+      "Creator growth ke liye kya useful hai?",
+    options: [
+      "Consistency aur improvement",
+      "Har post copy karna",
+      "Ek post ke baad quit karna"
+    ],
+    answer: 0
+  }
+
+};
+
+
+function openCreatorLesson(lesson) {
+
+  currentLesson = lesson;
+
+  const data = creatorLessons[lesson];
+
+  if (!data) return;
+
+  const lessonBox = $("creatorLesson");
+
+  lessonBox.innerHTML = `
+    <div>
+
+      <h2>${data.title}</h2>
+
+      <div class="card">
+        <h3>📖 Learn</h3>
+        <p>${data.explanation}</p>
+      </div>
+
+      <div class="card">
+        <h3>💡 Real Example</h3>
+        <p style="white-space:pre-line">${data.example}</p>
+      </div>
+
+      <div class="card">
+        <h3>✅ What to do</h3>
+        <p>${data.do}</p>
+      </div>
+
+      <div class="card">
+        <h3>❌ Common Mistake</h3>
+        <p>${data.mistake}</p>
+      </div>
+
+      <div class="card">
+        <h3>📝 Your Task</h3>
+        <p>${data.task}</p>
+
+        <textarea
+          id="creatorTask"
+          placeholder="Apna answer yahan likho..."
+          style="width:100%;min-height:90px;padding:10px;box-sizing:border-box;"
+        ></textarea>
+      </div>
+
+      <div class="card">
+        <h3>🧠 Quick Quiz</h3>
+
+        <p><b>${data.question}</b></p>
+
+        ${data.options.map((option, index) => `
+          <button
+            onclick="checkCreatorAnswer(${index})"
+            style="display:block;width:100%;margin:8px 0;"
+          >
+            ${option}
+          </button>
+        `).join("")}
+
+        <p id="creatorQuizResult"></p>
+      </div>
+
+      <button onclick="completeCreatorLesson()">
+        🏆 Complete Lesson
+      </button>
+
+      <button onclick="closeCreatorLesson()">
+        ← Back
+      </button>
+
+    </div>
+  `;
+
+  lessonBox.classList.remove("hidden");
+
+  }
+
+function checkCreatorAnswer(selected) {
+
+  const data = creatorLessons[currentLesson];
+  const result = $("creatorQuizResult");
+
+  if (selected === data.answer) {
+    result.innerHTML = "✅ Correct! Great job.";
+  } else {
+    result.innerHTML = "❌ Try again.";
+  }
+
+}
+
+function completeCreatorLesson() {
+
+  const task = $("creatorTask");
+
+  if (!task || task.value.trim().length < 3) {
+
+    alert("📝 Pehle apna task complete karo.");
+
+    return;
+  }
+
+  localStorage.setItem(
+    "creatorLesson" + currentLesson,
+    "completed"
+  );
+
+  alert(
+    "🏆 Lesson " + currentLesson + " completed!"
+  );
+}
+
+
+function closeCreatorLesson() {
+
+  $("creatorLesson").classList.add("hidden");
+
+}
+
+  
+async function loadNotifications(){
+
+  const response =
+    await fetch("/api/notifications", {
+      headers:{
+        Authorization: token
+      }
+    });
+
+  const notifications =
+    await response.json();
+
+  if(!response.ok){
+    $("notificationsList").innerHTML =
+      "Could not load notifications.";
+    return;
+  }
+
+  if(notifications.length === 0){
+    $("notificationsList").innerHTML =
+      "<p>No notifications yet.</p>";
+    return;
+  }
+
+  $("notificationsList").innerHTML =
+    notifications.map(notification => {
+
+      let text = "";
+
+      if(notification.type === "like"){
+        text =`
+          ❤️ @${escapeHTML(notification.username)} liked your post.`;
+      }
+
+      if(notification.type === "comment"){
+        text =`
+          💬 @${escapeHTML(notification.username)} commented on your post.`;
+      }
+
+      if(notification.type === "follow"){
+        text =`
+          👤 @${escapeHTML(notification.username)} started following you.`;
+      }
+
+      return `
+        <div class="post">
+          ${text}
+        </div>
+      `;
+
+    }).join("");
+}
+
+/* ---------- WAITLIST ---------- */
+
+async function joinWaitlist(){
+
+  const username =
+    $("waitUsername").value.trim();
+
+  const referralCode =
+    $("referralCode").value.trim();
+
+  $("waitMessage").innerHTML =
+    "Joining waitlist...";
+
+  try{
+
+    const response =
+      await fetch("/api/waitlist",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          username,
+          referralCode
+        })
+      });
+
+    const data =
+      await response.json();
+
+    if(!response.ok){
+      $("waitMessage").innerHTML =
+        data.message || "Request failed.";
+      return;
+    }
+
+    $("waitMessage").innerHTML =
+      `<div class="message">
+        ${data.message}<br>
+        Position: ${data.position}
+      </div>`;
+
+  }catch(error){
+
+    $("waitMessage").innerHTML =
+      `<div class="message">
+        Server connection error.
+      </div>`;
+  }
+}
+
+
+/* ---------- SIGNUP ---------- */
+
+async function signup(){
+
+  const username =
+    $("signupUsername").value.trim();
+
+  const password =
+    $("signupPassword").value;
+
+  $("signupMessage").innerHTML =
+    "Creating account...";
+
+  try{
+
+    const response =
+      await fetch("/api/signup",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          username,
+          password
+        })
+      });
+
+    const data =
+      await response.json();
+
+    if(!response.ok){
+      $("signupMessage").innerHTML =
+        data.message || "Signup failed.";
+      return;
+    }
+
+    $("signupMessage").innerHTML =
+      `<div class="message">
+        ${data.message}
+      </div>`;
+
+    setTimeout(()=>{
+      showLogin();
+    },800);
+
+  }catch(error){
+
+    $("signupMessage").innerHTMl=
+      `<div class="message">
+        Server connection error.
+      </div>`;
+  }
+}
+
+function showLogin(){
+  $("loginPage").classList.remove("hidden");
+  $("signupPage").classList.add("hidden");
+}
+
+function showSignup(){
+  $("signupPage").classList.remove("hidden");
+  $("loginPage").classList.add("hidden");
+}
+
+
+/* ---------- LOGIN ---------- */
+
+async function login(){
+
+  
+
+  const username =
+    $("loginUsername").value.trim();
+
+  const password =
+    $("loginPassword").value;
+
+  $("loginMessage").innerHTML =
+    "Logging in...";
+
+  try{
+
+    const response =
+      await fetch("/api/login",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          username,
+          password
+        })
+      });
+
+    const data =
+      await response.json();
+
+    if(!response.ok){
+      $("loginMessage").innerHTML =
+        data.message || "Login failed.";
+      return;
+    }
+
+    token = data.token;
+
+    localStorage.setItem(
+      "loveLifeToken",
+      token
+    );
+
+    loadReferralCode();
+
+    $("loginMessage").innerHTML =
+      `<div class="message">
+        Login successful ❤️
+      </div>`;
+
+    setTimeout(()=>{
+      showApp();
+    },500);
+
+  }catch(error){
+
+    $("loginMessage").innerHTML =
+      `<div class="message">
+        Server connection error.
+      </div>`;
+  }
+}
+
+async function loadFollowRequests(){
+
+  const result =
+    await fetch("/api/follow-requests", {
+      headers:{
+        Authorization: token
+      }
+    });
+
+  const requests =
+    await result.json();
+
+  const list =
+    $("followRequestsList");
+
+  list.innerHTML = "";
+
+  if (!requests.length) {
+    list.textContent =
+      "No follow requests.";
+    return;
+  }
+
+  requests.forEach(request => {
+
+    const div =
+      document.createElement("div");
+
+div.innerHTML = `
+  <b>@${escapeHTML(request.username)}</b>
+  <p>${escapeHTML(request.bio || "")}</p>
+
+  <button onclick="acceptFollowRequest(${request.id})">
+    ✅ Accept
+  </button>
+
+  <button onclick="rejectFollowRequest(${request.id})">
+    ❌ Reject
+  </button>
+`;
+
+list.appendChild(div);
+  });
+}
+
+async function acceptFollowRequest(requestId){
+
+  const result =
+    await fetch(`/api/follow-requests/${requestId}/accept`, {
+      method: "POST",
+      headers:{
+        Authorization: token
+      }
+    });
+
+  const data =
+    await result.json();
+
+  alert(
+    data.message ||
+    "Follow request accepted."
+  );
+
+  loadFollowRequests();
+}
+
+
+async function rejectFollowRequest(requestId){
+
+  const result =
+    await fetch(`/api/follow-requests/${requestId}/reject`, {
+      method: "POST",
+      headers:{
+        Authorization: token
+      }
+    });
+
+  const data =
+    await result.json();
+
+  alert(
+    data.message ||
+    "Follow request rejected."
+  );
+
+  loadFollowRequests();
+}
+
+
+/* ---------- PROFILE ---------- */
+async function loadProfile()
+{
+
+  try{
+
+    const response =
+      await fetch("/api/profile",{
+        headers:{
+          Authorization:token
+        }
+      });
+
+    const data =
+      await response.json();
+
+    if(!response.ok){
+      logout();
+      return;
+    }
+
+    currentUserId = data.id;
+
+    $("profileUsername").textContent =
+      "@" + data.username;
+
+    $("profileBio").textContent =
+      data.bio || "No bio yet.";
+
+    $("bioInput").value =
+      data.bio || "";
+
+    if($("messagePrivacy")){
+      $("messagePrivacy").value =
+        data.message_privacy || "everyone";
+    }
+
+    if($("accountPrivacy")){
+      $("accountPrivacy").value =
+        data.account_privacy || "public";
+    }
+
+    const followersResponse =
+  await fetch("/api/users/" + data.id + "/followers");
+
+const followers =
+  await followersResponse.json();
+
+const followingResponse =
+  await fetch("/api/users/" + data.id + "/following");
+
+const following =
+  await followingResponse.json();
+
+const postsResponse =
+  await fetch("/api/users/" + data.id + "/posts");
+
+const posts =
+  await postsResponse.json();
+
+
+    $("profileFollowersCount").textContent =
+      followers.length;
+
+    $("profileFollowingCount").textContent =
+      following.length;
+
+    $("profilePostsCount").textContent =
+      posts.length;
+
+    loadFollowRequests();
+
+  }catch(error){
+
+    $("profileMessage").innerHTML =
+      "Could not load profile.";
+  }
+}
+
+async function showFollowers
+(){
+
+  const response = await fetch(
+    `/api/users/${currentUserId}/followers`
+  );
+
+  const users = await response.json();
+
+  if(users.length === 0){
+    $("followLists").innerHTML =
+      "<p>No followers yet.</p>";
+    return;
+  }
+
+  $("followLists").innerHTML = users.map(user => `
+    <div class="card">
+      <b>@${escapeHTML(user.username)}</b>
+      <p>${escapeHTML(user.bio || "")}</p>
+    </div>
+  `).join("");
+}
+
+async function showFollowing(){
+
+  const response = await fetch(
+    `/api/users/${currentUserId}/following`
+  );
+
+  const users = await response.json();
+
+  if(users.length === 0){
+    $("followLists").innerHTML =
+      "<p>Not following anyone yet.</p>";
+    return;
+  }
+
+  $("followLists").innerHTML = users.map(user => `
+    <div class="card">
+      <b>@${escapeHTML(user.username)}</b>
+      <p>${escapeHTML(user.bio || "")}</p>
+    </div>
+  `).join("");
+}
+
+/* ---------- CREATE POST ---------- */
+
+async function createPost(){
+
+  const content =
+    $("postContent").value.trim();
+    const mediaInput = $("postMedia");
+const mediaFile = mediaInput.files[0];
+
+let media = "";
+
+if (mediaFile) {
+  const reader = new FileReader();
+
+  media = await new Promise((resolve, reject) => {
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(mediaFile);
+  });
+}
+
+  if(!content){
+    $("postMessage").innerHTML =
+      "Post empty hai.";
+    return;
+  }
+
+  try{
+
+    const response =
+      await fetch("/api/posts",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          Authorization:token
+        },
+        body:JSON.stringify({
+  content,
+  media
+})
+      });
+
+    const data =
+      await response.json();
+
+    $("postMessage").innerHTML =
+      data.message || "Post created.";
+
+    if(response.ok){
+  $("postContent").value="";
+
+  addLovePoints(5);
+
+  let postCount =
+  Number(localStorage.getItem("loveLifePostCount")) || 0;
+
+postCount++;
+
+localStorage.setItem(
+  "loveLifePostCount",
+  postCount
+);
+
+updateBadges();
+
+  loadFeed();
+}
+
+  }catch(error){
+
+    $("postMessage").innerHTML =
+      "Post failed.";
+  }
+}
+
+
+/* ---------- FEED ---------- */
+
+async function loadFeed(){
+
+  $("feed").innerHTML =
+    "Loading...";
+
+  try{
+
+    const response =
+      await fetch("/api/feed",{
+        headers:{
+          Authorization:token
+        }
+      });
+
+    const posts =
+      await response.json();
+
+    if(!response.ok){
+      logout();
+      return;
+    }
+
+    if(posts.length === 0){
+      $("feed").innerHTML =
+        "<p>No posts yet.</p>";
+      return;
+    }
+
+    $("feed").innerHTML =
+      posts.map(post => `
+
+        <div class="post">
+
+          <b>@${escapeHTML(post.username)}</b>
+
+          <p>
+            ${escapeHTML(post.content)}
+          </p>
+
+
+          ${post.media ? (
+  post.media.startsWith("data:video/")
+    ? `<video src="${post.media}" controls playsinline style="width:100%;max-height:500px;border-radius:12px;"></video>`
+    : `<img src="${post.media}" style="width:100%;max-height:500px;object-fit:contain;border-radius:12px;">`
+) : ""}
+
+<div class="small">
+
+          <div class="small">
+            ❤️ ${post.likes}
+            &nbsp;&nbsp;
+            💬 ${post.comments}
+          </div>
+
+        <button onclick="editPost(${post.id})">Edit</button>
+
+<button onclick="deletePost(${post.id})">Delete</button>
+
+<button onclick="likePost(${post.id})">
+  ${post.liked ? "Unlike" : "Like"}
+</button>
+
+<button onclick="savePost(${post.id})">
+  🔖 Save
+</button>
+
+<button onclick="sharePost(${post.id})">
+  ↗️ Share
+</button>
+
+<button onclick="repostPost(${post.id})">
+  🔁 Repost
+</button>
+
+<button onclick="showComments(${post.id})">
+  Comments
+</button>
+
+<button onclick="followUser(${post.id})">
+  Follow
+</button>
+
+<button onclick="blockUser(${post.id})">
+  Block
+</button>
+
+<button onclick="reportPost(${post.id})">
+  Report
+</button>
+
+    
+  
+
+  <div
+ id="comments-${post.id}"></div>
+
+        </div>
+
+      `).join("");
+
+  }catch(error){
+
+    $("feed").innerHTML =
+      "Could not load feed.";
+  }
+}
+
+async function loadSavedPosts(){
+
+  const response = await fetch("/api/saved-posts", {
+    headers:{
+      Authorization:token
+    }
+  });
+
+  const posts = await response.json();
+
+  if(!response.ok){
+    $("savedPosts").innerHTML = "Could not load saved posts.";
+    return;
+  }
+
+  if(posts.length === 0){
+    $("savedPosts").innerHTML = "<p>No saved posts yet.</p>";
+    return;
+  }
+
+  $("savedPosts").innerHTML = posts.map(post => `
+    <div class="post">
+
+      <b>@${escapeHTML(post.username)}</b>
+
+      <p>${escapeHTML(post.content)}</p>
+
+      ${post.media ? (
+        post.media.startsWith("data:video/")
+          ? `<video src="${post.media}" controls playsinline style="width:100%;max-height:500px;border-radius:12px;"></video>`
+          : `<img src="${post.media}" style="width:100%;max-height:500px;object-fit:contain;border-radius:12px;">`
+      ) : ""}
+
+    </div>
+  `).join("");
+}
+
+async function sharePost(id){
+
+  const url =
+    window.location.origin + "/?post=" + id;
+
+  if(navigator.share){
+
+    try{
+      await navigator.share({
+        title: "Love Life",
+        text: "Check out this post on Love Life ❤️",
+        url: url
+      });
+    }catch(error){
+      // User cancelled sharing
+    }
+
+  }else{
+
+    await navigator.clipboard.writeText(url);
+
+    alert("Post link copied 🔗");
+  }
+}
+
+
+async function repostPost(id){
+
+  const response = await fetch(`/api/posts/${id}/repost`, {
+    method: "POST",
+    headers: {
+      Authorization: token
+    }
+  });
+
+  const data = await response.json();
+
+  alert(data.message || "Done");
+
+  if(response.ok){
+    loadFeed();
+  }
+}
+
+    
+
+/* ---------- LIKE ---------- */
+
+async function likePost(id){
+
+  try{
+
+    await 
+      fetch(`/api/posts/${id}/like`, {
+      
+        method:"POST",
+        headers:{
+          Authorization:token
+        }
+      }
+    
+    );
+
+    location.reload();
+
+  }catch(error){
+    alert("Like failed.");
+  }
+}
+
+
+/* ---------- COMMENTS ---------- */
+
+async function showComments(id){
+
+  const box =
+  $("user-comments-" + id);
+
+  if(!box) return;
+
+  try{
+
+    const response =
+      await fetch(`/api/posts/${id}/comments`, {
+        headers:{
+          Authorization: token
+        }
+      });
+
+    const comments =
+      await response.json();
+
+    let html = `
+      <div style="margin-top:12px">
+        <input id="comment-${id}"
+          placeholder="Write a comment">
+        <button onclick="addComment(${id})">
+          Comment
+        </button>
+      </div>
+    `;
+
+    if(comments.length){
+
+      html += comments.map(comment => `
+        <div class="small"
+          style="margin-top:8px">
+
+          <b>@${escapeHTML(comment.username)}</b>:
+          ${escapeHTML(comment.content)}
+
+        </div>
+      `).join("");
+
+    }else{
+
+      html +=
+  `<p class="small">No comments yet.</p>`;
+    }
+
+    box.innerHTML = html;
+
+  }catch(error){
+
+    box.innerHTML =
+      "Could not load comments.";
+  }
+}
+
+async function updateProfile() {
+  try {
+    const bio = $("bioInput").value.trim();
+
+    const response = await fetch("/api/profile", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      },
+      body: JSON.stringify({
+        bio: bio
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message || "Profile update nahi hua.");
+      return;
+    }
+
+    $("profileBio").textContent =
+      data.bio || "No bio yet.";
+
+    alert("Profile updated successfully!");
+  } catch (error) {
+    console.error(error);
+    alert("Profile update nahi hua.");
+  }
+}
+
+async function addComment(id){
+
+  const input =
+    $("comment-" + id);
+
+  const content =
+    input.value.trim();
+
+  if(!content) return;
+
+  try{
+
+    const response =
+      await fetch(
+        `/api/posts/${id}/comments`,
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":"application/json",
+            Authorization:token
+          },
+          body:JSON.stringify({
+            content
+          })
+        }
+      );
+
+    if(response.ok){
+      showComments(id);
+      loadFeed();
+    }
+
+  }catch(error){
+
+    alert("Comment failed.");
+  }
+}
+
+
+/* ---------- SEARCH ---------- */
+
+async function searchUsers(){
+
+  const q =
+    $("searchInput").value.trim();
+
+  $("searchResults").innerHTML =
+    "Searching...";
+
+  try{
+
+    const response =
+      await fetch(
+       `/api/search?q=${encodeURIComponent(q)}`,
+        {
+          headers:{
+            Authorization:token
+          }
+        }
+      );
+
+    const users =
+      await response.json();
+
+    if(!users.length){
+      $("searchResults").innerHTML =
+        "<p>No users found.</p>";
+      return;
+    }
+
+    $("searchResults").innerHTML =
+      users.map(user => `
+
+        <div class="post">
+
+          <b>
+  <a href="#" onclick="openUserProfile(${user.id}); return false;">
+    @${escapeHTML(user.username)}
+  </a>
+</b>
+
+          <p>
+            ${escapeHTML(user.bio || "No bio")}
+          </p>
+
+          <button onclick="followUser(${user.id})">
+            Follow
+          </button>
+
+          <button onclick="blockUser(${user.id})">
+            Block
+          </button>
+
+        </div>
+
+      `).join("");
+
+  }catch(error){
+
+    $("searchResults").innerHTML =
+      "Search failed.";
+  }
+  
+    }
+async function openUserProfile(id){
+
+  $("feedPage").classList.add("hidden");
+  $("profilePage").classList.add("hidden");
+  $("searchPage").classList.add("hidden");
+  $("savedPage").classList.add("hidden");
+  $("userProfilePage").classList.remove("hidden");
+
+  $("userProfileUsername").textContent =
+    "Loading...";
+
+  $("userProfileBio").textContent = "";
+
+  $("userProfilePosts").innerHTML =
+    "Loading posts...";
+
+  try{
+
+    const userResponse =
+      await fetch(`/api/users/${id}`);
+
+    const user =
+      await userResponse.json();
+
+    if(!userResponse.ok){
+      $("userProfilePosts").innerHTML =
+        "User not found.";
+      return;
+    }
+
+    $("userProfileUsername").textContent =
+      "@" + user.username;
+
+    $("userProfileBio").textContent =
+      user.bio || "No bio yet.";
+
+    $("userFollowButton").onclick = async function(){
+
+  await followUser(id);
+
+};
+
+    const postsResponse =
+      await fetch(`/api/users/${id}/posts`);
+
+    const posts =
+      await postsResponse.json();
+
+    if(!posts.length){
+      $("userProfilePosts").innerHTML =
+        "<p>No posts yet.</p>";
+      return;
+    }
+
+$("userProfilePosts").innerHTML =
+  posts.map(post => `
+
+    <div class="post">
+
+      <b>@${escapeHTML(post.username)}</b>
+
+      <p>
+        ${escapeHTML(post.content)}
+      </p>
+
+      ${post.media ? (
+        post.media.startsWith("data:video/")
+          ? `<video
+              src="${post.media}"
+              controls
+              playsinline
+              style="width:100%;max-height:500px;border-radius:12px;">
+            </video>`
+          : `<img
+              src="${post.media}"
+              style="width:100%;max-height:500px;object-fit:contain;border-radius:12px;">
+            `
+      ) : ""}
+
+      <div class="small">
+        ❤️ ${post.likes || 0}
+        &nbsp;&nbsp;
+        💬 ${post.comments || 0}
+      </div>
+
+      <button onclick="likePost(${post.id})">
+        ${post.liked ? "Unlike" : "Like"}
+      </button>
+
+      <button onclick="savePost(${post.id})">
+        🔖 Save
+      </button>
+
+      <button onclick="sharePost(${post.id})">
+        ↗️ Share
+      </button>
+
+      <button onclick="repostPost(${post.id})">
+        🔁 Repost
+      </button>
+
+      <button onclick="showComments(${post.id})">
+        Comments
+      </button>
+
+      <div id="user-comments-${post.id}"></div>
+
+    </div>
+
+  `).join("");
+
+}catch(error){
+
+    "Could not load profile.";
+}
+}
+
+
+/* ---------- FOLLOW ---------- */
+
+async function followUser(id){
+
+  try{ const response =
+      await fetch(
+        `/api/users/${id}/follow`,
+        
+        {
+          method:"POST",
+          headers:{
+            Authorization:token
+          }
+        }
+      );
+
+    const data =
+  await response.json();
+
+if (data.requested) {
+
+  alert("Follow request sent. 📩");
+
+} else if (data.following) {
+
+  alert("Following ❤️");
+
+} else {
+
+  alert("Unfollowed");
+
+}
+
+  }catch(error){
+
+    alert("Follow failed.");
+  }
+}
+
+
+/* ---------- BLOCK ---------- */
+
+async function blockUser(id){
+
+  const confirmBlock =
+    confirm("Block this user?");
+
+  if(!confirmBlock) return;
+
+  try{
+
+    const response =
+      await fetch(
+        `/api/users/${id}/block`,
+        {
+          method:"POST",
+          headers:{
+            Authorization:token
+          }
+        }
+      );
+
+    const data =
+      await response.json();
+
+    alert(data.message);
+
+    loadFeed();
+
+  }catch(error){
+
+    alert("Block failed.");
+  }
+}
+
+
+/* ---------- REPORT ---------- */
+
+async function reportPost(id){
+
+  const reason =
+    prompt("Report reason:");
+
+  if(!reason) return;
+
+  try{
+
+    const response =
+      await fetch("/api/report",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          Authorization:token
+        },
+        body:JSON.stringify({
+          targetType:"post",
+          targetId:id,
+          reason
+        })
+      });
+
+    const data =
+      await response.json();
+
+    alert(data.message);
+
+  }catch(error){
+
+    alert("Report failed.");
+  }
+}
+
+
+/* ---------- LOGOUT ---------- */
+
+async function logout(){
+
+  try{
+
+    await fetch("/api/logout",{
+      method:"POST",
+      headers:{
+        Authorization:token
+      }
+    });
+
+  }catch(error){}
+
+  localStorage.removeItem(
+    "loveLifeToken"
+  );
+
+  token = null;
+
+  $("nav").classList.add("hidden");
+
+  showLaunch();
+}
+
+
+/* ---------- SECURITY ---------- */
+
+
+
+  function escapeHTML(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+
+/* ---------- START ---------- */
+
+if(token){
+
+  showApp();
+
+}else{
+
+  showLaunch();
+
+}
+
+async function changePassword(){
+  const currentPassword = $("currentPassword").value;
+  const newPassword = $("newPassword").value;
+  const confirmPassword = $("confirmPassword").value;
+
+  if (newPassword !== confirmPassword) {
+    $("passwordMessage").textContent =
+      "New passwords do not match.";
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/change-password", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": token
+      },
+      body: JSON.stringify({
+  currentPassword,
+  newPassword,
+  confirmPassword
+})
+    });
+
+    const data = await response.json();
+
+    $("passwordMessage").textContent =
+      data.message || "Something went wrong.";
+
+    if (response.ok) {
+      $("currentPassword").value = "";
+      $("newPassword").value = "";
+      $("confirmPassword").value = "";
+    }
+  } catch (error) {
+    console.error(error);
+    $("passwordMessage").textContent =
+      "Password change error.";
+  }
+}
+
+function showLogin(){
+  $("loginPage").classList.remove("hidden");
+  $("signupPage").classList.add("hidden");
+}
+
+function showSignup(){
+  $("signupPage").classList.remove("hidden");
+  $("loginPage").classList.add("hidden");
+}
+
+async function editPost(id){
+
+  const content = prompt("Edit your post:");
+
+  if(content === null) return;
+
+  const newContent = content.trim();
+
+  if(!newContent) return;
+
+  const response = await fetch(`/api/posts/${id}`, {
+    method:"PUT",
+    headers:{
+      "Content-Type":"application/json",
+      Authorization:token
+    },
+    body:JSON.stringify({
+      content:newContent
+    })
+  });
+
+  const data = await response.json();
+
+  alert(data.message || "Done");
+
+  if(response.ok){
+    loadFeed();
+  }
+}
+
+async function savePost(id){
+
+  const response = await fetch(`/api/posts/${id}/save`, {
+    method:"POST",
+    headers:{
+      Authorization:token
+    }
+  });
+
+  const data = await response.json();
+
+  alert(data.message || "Done");
+
+  if(response.ok){
+    loadFeed();
+  }
+}
+  
+
+
+async function deletePost(id){
+  if(!confirm("Delete this post?")) return;
+
+  const response = await fetch(`/api/posts/${id}`, {
+    method:"DELETE",
+    headers:{
+      Authorization:token
+    }
+  });
+
+  const data = await response.json();
+
+  alert(data.message || "Done");
+
+  if(response.ok){
+    loadFeed();
+  }
+}
+
+function showLogin(){
+  $("loginPage").classList.remove("hidden");
+  $("signupPage").classList.add("hidden");
+}
+
+function showSignup(){
+  $("signupPage").classList.remove("hidden");
+  $("loginPage").classList.add("hidden");
+}
+
+async function startChat(){
+
+  const username =
+    $("messageUsername").value.trim();
+
+  if(!username){
+    alert("Username enter karo.");
+    return;
+  }
+
+  const result =
+    await fetch(
+      `/api/search?q=${encodeURIComponent(username)}`,
+      {
+        headers:{
+          Authorization: token
+        }
+      }
+    );
+
+  const users = await result.json();
+
+  const found =
+    users.find(
+      user =>
+        user.username.toLowerCase() ===
+        username.toLowerCase()
+    );
+
+  if(!found){
+    alert("User not found.");
+    return;
+  }
+
+  $("chatBox").classList.remove("hidden");
+
+  $("chatWith").textContent =
+    "Chat with @" + found.username;
+
+    $("chatWith").innerHTML =
+  "Chat with @" + found.username +
+  '<div id="userStatus">Checking status...</div>';
+
+loadUserStatus(found.id);
+
+  $("chatBox").dataset.userId =
+    found.id;
+
+loadMessages(found.id);
+
+localStorage.setItem(
+  "loveLifeLastChat",
+  JSON.stringify({
+    id: found.id,
+    username: found.username
+  })
+);
+}
+ 
+async function loadMessages(userId){
+
+  if (!currentUserId) {
+
+    const profileResponse =
+      await fetch("/api/profile", {
+        headers: {
+          Authorization: token
+        }
+      });
+
+    const profileData =
+      await profileResponse.json();
+
+    if (profileResponse.ok) {
+      currentUserId = profileData.id;
+    }
+  }
+
+  
+
+  const result = await fetch(
+    `/api/messages/${userId}`,
+    {
+      headers:{
+        Authorization: token
+      }
+    }
+  );
+
+  const messages = await result.json();
+
+  const list = $("messagesList");
+
+  list.innerHTML = "";
+
+  messages.forEach(message => {
+
+    const div = document.createElement("div");
+
+    div.className = "card";
+div.style.cursor = "pointer";
+
+
+    div.textContent =
+  "@" + message.username + ": " +
+  message.content +
+  (message.sender_id === Number(currentUserId)
+    ? (message.is_read ? "  ✓✓ Seen" : "  ✓ Sent")
+    : "");
+
+    if (message.sender_id === Number(currentUserId)) {
+
+  const deleteButton =
+    document.createElement("button");
+
+  deleteButton.textContent =
+    "🗑️ Delete";
+
+  deleteButton.onclick = async () => {
+
+    const result = await fetch(
+      `/api/messages/${message.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: token
+        }
+      }
+    );
+
+    const data = await result.json();
+
+    if (!result.ok) {
+      alert(data.message || "Message delete nahi hua.");
+      return;
+    }
+
+    loadMessages(userId);
+  };
+
+  div.appendChild(deleteButton);
+}
+
+ list.appendChild(div);
+});
+}
+  
+
+setInterval(() => {
+  const userId = $("chatBox").dataset.userId;
+
+  if (
+    !$("chatBox").classList.contains("hidden") &&
+    userId
+  ) {
+    loadMessages(userId);
+  }
+}, 3000);
+
+async function loadUserStatus(userId){
+
+  const result = await fetch(
+    `/api/users/${userId}/status`
+  );
+
+  const data = await result.json();
+
+  const status = $("userStatus");
+
+  if(data.online){
+    status.textContent = "🟢 Online";
+  } else {
+    const date = new Date(data.last_seen + "Z");
+
+status.textContent =
+  "⚪ Last seen: " +
+  date.toLocaleString("en-IN", {
+    dateStyle: "medium",
+    timeStyle: "short"
+  });
+  }
+  }
+
+  let typingTimer;
+
+$("messageText").addEventListener("input", () => {
+
+  const userId =
+    $("chatBox").dataset.userId;
+
+  if (!userId || !token) return;
+
+  fetch("/api/messages/typing", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: token
+    },
+    body: JSON.stringify({
+      receiver_id: Number(userId)
+    })
+  });
+
+});
+
+async function sendMessage(){
+
+  const userId =
+    $("chatBox").dataset.userId;
+
+  const content =
+    $("messageText").value.trim();
+
+  if(!userId || !content){
+    return;
+  }
+
+  const result = await fetch(
+    "/api/messages",
+    {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        Authorization:token
+      },
+      body:JSON.stringify({
+        receiver_id:Number(userId),
+        content:content
+      })
+    }
+  );
+
+  const data = await result.json();
+
+  if(!result.ok){
+    alert(data.message || "Message send nahi hua.");
+    return;
+  }
+
+  $("messageText").value = "";
+
+  await loadMessages(userId);
+}
+
+setInterval(async () => {
+
+  const userId =
+    $("chatBox").dataset.userId;
+
+  if (
+    !$("chatBox").classList.contains("hidden") &&
+    userId &&
+    token
+  ) {
+
+    const result = await fetch(
+      `/api/messages/${userId}/typing`,
+      {
+        headers: {
+          Authorization: token
+        }
+      }
+    );
+
+    const data = await result.json();
+
+    const status =
+      $("userStatus");
+
+    if (data.typing) {
+      status.textContent = "✍️ Typing...";
+    } else {
+      loadUserStatus(userId);
+    }
+  }
+
+}, 1000);
+
+setInterval(async () => {
+
+  if (!token) return;
+
+  await fetch("/api/heartbeat", {
+    method: "POST",
+    headers: {
+      Authorization: token
+    }
+  });
+
+}, 30000);
+
+async function saveMessagePrivacy(){
+
+  const privacy =
+    $("messagePrivacy").value;
+
+  const result =
+    await fetch("/api/message-privacy", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      },
+      body: JSON.stringify({
+        message_privacy: privacy
+      })
+    });
+
+  const data =
+    await result.json();
+
+    alert(JSON.stringify(data));
+
+  $("messagePrivacyMessage").textContent =
+    data.message ||
+    "Privacy updated.";
+}
+
+async function saveAccountPrivacy(){
+
+  const privacy =
+    $("accountPrivacy").value;
+
+  const result =
+    await fetch("/api/account-privacy", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token
+      },
+      body: JSON.stringify({
+        account_privacy: privacy
+      })
+    });
+
+  const data =
+    await result.json();
+
+  $("accountPrivacyMessage").textContent =
+    data.message ||
+    "Account privacy updated.";
+}
+
+// Daily Time Tracking
+const timeStart = Date.now();
+
+let todayStats = JSON.parse(
+  localStorage.getItem("loveLifeTimeStats") || "{}"
+);
+
+const today = new Date().toISOString().split("T")[0];
+
+if (todayStats.date !== today) {
+  todayStats = {
+    date: today,
+    opens: 0,
+    totalSeconds: 0
+  };
+}
+
+todayStats.opens++;
+
+localStorage.setItem(
+  "loveLifeTimeStats",
+  JSON.stringify(todayStats)
+);
+
+setInterval(() => {
+  todayStats.totalSeconds =
+    Math.floor((Date.now() - timeStart) / 1000);
+
+  localStorage.setItem(
+    "loveLifeTimeStats",
+    JSON.stringify(todayStats)
+  );
+
+  const minutes =
+    Math.floor(todayStats.totalSeconds / 60);
+
+  if ($("todayTime")) {
+    $("todayTime").textContent =
+      minutes + " minutes";
+  }
+
+  if ($("todayOpens")) {
+    $("todayOpens").textContent =
+      todayStats.opens;
+  }
+}, 1000);
+
+//Time Reminder
+setInterval(() => {
+  const minutes =
+    Math.floor(todayStats.totalSeconds / 60);
+
+  if (minutes > 0 && minutes % 20 === 0) {
+    alert(
+      "⏱️ You’ve been using Love Life for " +
+      minutes +
+      " minutes. Take a short break ❤️"
+    );
+  }
+}, 60000);
+
+function enableQuietMode(minutes) {
+  const endTime = Date.now() + minutes * 60 * 1000;
+
+  localStorage.setItem("quietModeEnd", endTime);
+
+  updateQuietStatus();
+
+  alert(
+    "🔕 Quiet Mode ON for " +
+    minutes +
+    " minutes."
+  );
+}
+
+function updateQuietStatus() {
+  const endTime =
+    Number(localStorage.getItem("quietModeEnd")) || 0;
+
+  const status = document.getElementById("quietStatus");
+
+  if (!status) return;
+
+  if (Date.now() < endTime) {
+    const remaining =
+      Math.ceil((endTime - Date.now()) / 60000);
+
+    status.textContent =
+      "🔕 Quiet Mode ON — " +
+      remaining +
+      " minutes remaining";
+  } else {
+    status.textContent = "Quiet Mode is OFF";
+  }
+}
+
+setInterval(updateQuietStatus, 60000);
+updateQuietStatus();
+
+// Love Life Points
+let loveLifePoints =
+  Number(localStorage.getItem("loveLifePoints")) || 0;
+
+function updateLovePoints() {
+  const pointsElement =
+    document.getElementById("lovePointsValue");
+
+  if (pointsElement) {
+    pointsElement.textContent = loveLifePoints;
+  }
+}
+
+function addLovePoints(points) {
+  loveLifePoints += points;
+
+  localStorage.setItem(
+    "loveLifePoints",
+    loveLifePoints
+  );
+
+  updateLovePoints();
+}
+
+updateLovePoints();
+
+
+
+updateLovePoints();
+
+// Badges / Achievements
+function updateBadges() {
+
+  const postCount =
+    Number(localStorage.getItem("loveLifePostCount")) || 0;
+
+  const badges = document.querySelectorAll("#badgesList .badge");
+
+  if (!badges.length) return;
+
+  if (postCount >= 1) {
+    badges[0].classList.remove("locked");
+    badges[0].classList.add("unlocked");
+  }
+
+  if (postCount >= 10) {
+    badges[1].classList.remove("locked");
+    badges[1].classList.add("unlocked");
+  }
+
+  if (postCount >= 25) {
+    badges[2].classList.remove("locked");
+    badges[2].classList.add("unlocked");
+  }
+
+  if (postCount >= 50) {
+    badges[3].classList.remove("locked");
+    badges[3].classList.add("unlocked");
+  }
+}
+
+updateBadges();
+async function loadReferralCode() {
+  if (!token) return;
+
+  const referralElement =
+    document.getElementById("myReferralCode");
+
+  if (!referralElement) return;
+
+  try {
+    const response = await fetch("/api/profile", {
+      headers: {
+        Authorization: token
+      }
+    });
+
+    const data = await response.json();
+
+    console.log("Referral API:", response.status, data);
+    console.log("MY REFERRAL CODE =", data.referral_code);
+
+    if (data.referral_code) {
+      referralElement.innerText = data.referral_code;
+    } else {
+      referralElement.innerText =
+        "Referral code not available";
+    }
+
+  } catch (error) {
+    console.error(error);
+    referralElement.innerText =
+      "Referral code load failed";
+  }
+}
+
+loadReferralCode();
+
+
+function openCreatorLesson(lesson) {
+  currentLesson = lesson;
+
+  const data = creatorLessons[lesson];
+
+  if (!data) return;
+
+  const lessonBox = $("creatorLesson");
+
+  lessonBox.innerHTML = `
+    <h2>${data.title}</h2>
+
+    <div class="card">
+      <h3>📖 Learn</h3>
+      <p>${data.explanation}</p>
+    </div>
+
+    <div class="card">
+      <h3>💡 Real Example</h3>
+      <p>${data.example}</p>
+    </div>
+
+    <div class="card">
+      <h3>✅ What to do</h3>
+      <p>${data.do}</p>
+    </div>
+
+    <div class="card">
+      <h3>❌ Common Mistake</h3>
+      <p>${data.mistake}</p>
+    </div>
+
+    <div class="card">
+      <h3>📝 Your Task</h3>
+      <p>${data.task}</p>
+
+      <textarea
+        id="creatorTask"
+        placeholder="Apna answer yahan likho..."
+        style="width:100%;min-height:90px;padding:10px;box-sizing:border-box;"
+      ></textarea>
+    </div>
+
+    <div class="card">
+      <h3>🧠 Quick Quiz</h3>
+      <p><b>${data.question}</b></p>
+
+      ${data.options.map((option, index) => `
+        <button
+          onclick="checkCreatorAnswer(${index})"
+          style="display:block;width:100%;margin:8px 0;"
+        >
+          ${option}
+        </button>
+      `).join("")}
+
+      <p id="creatorQuizResult"></p>
+    </div>
+
+    <button onclick="completeCreatorLesson()">
+      🏆 Complete Lesson
+    </button>
+
+    <button onclick="closeCreatorLesson()">
+      ← Back
+    </button>
+  `;
+
+  lessonBox.classList.remove("hidden");
+}
+
+function checkCreatorAnswer(selected) {
+  const data = creatorLessons[currentLesson];
+  const result = $("creatorQuizResult");
+
+  if (selected === data.answer) {
+    result.innerHTML = "✅ Correct! Great job.";
+  } else {
+    result.innerHTML = "❌ Try again. Lesson ko ek baar aur padho.";
+  }
+}
+
+function completeCreatorLesson() {
+  const task = $("creatorTask");
+
+  if (!task || task.value.trim().length < 3) {
+    alert("📝 Pehle apna task complete karo.");
+    return;
+  }
+
+  localStorage.setItem(
+    "creatorLesson" + currentLesson,
+    "completed"
+  );
+
+  alert("🏆 Lesson " + currentLesson + " completed!");
+}
+
+function closeCreatorLesson() {
+  $("creatorLesson").classList.add("hidden");
+}
+
+function generatePostIdeas() {
+  const topic = $("aiTopic").value.trim();
+  const result = $("aiResult");
+
+  if (!topic) {
+    result.classList.remove("hidden");
+    result.innerHTML = "⚠️ Pehle topic likho.";
+    return;
+  }
+
+  result.classList.remove("hidden");
+
+  result.innerHTML = `
+    <h3>💡 Post Ideas for ${topic}</h3>
+    <ol>
+      <li>${topic} ke 3 useful tips</li>
+      <li>${topic} se jude 5 interesting facts</li>
+      <li>${topic} par ek personal experience post</li>
+      <li>${topic} beginners ke liye simple guide</li>
+      <li>${topic} ki common mistakes</li>
+    </ol>
+  `;
+}
+
+function improveCaption() {
+  const caption = $("aiCaption").value.trim();
+  const result = $("aiResult");
+
+  if (!caption) {
+    result.classList.remove("hidden");
+    result.innerHTML = "⚠️ Pehle caption likho.";
+    return;
+  }
+
+  result.classList.remove("hidden");
+
+  result.innerHTML = `
+    <h3>✨ Improved Caption</h3>
+    <p>${caption}</p>
+    <p><b>💡 Tip:</b> Caption ko short, clear aur interesting rakho.</p>
+  `;
+}
+
+function createPostDraft() {
+  const topic = $("aiPostTopic").value.trim();
+  const result = $("aiResult");
+
+  if (!topic) {
+    result.classList.remove("hidden");
+    result.innerHTML = "⚠️ Pehle topic likho.";
+    return;
+  }
+
+  result.classList.remove("hidden");
+
+  result.innerHTML = `
+    <h3>📝 Post Draft</h3>
+
+    <p><b>${topic}</b></p>
+
+    <p>
+      Aaj main ${topic} ke baare mein ek simple aur useful post share kar raha hoon.
+      Is topic se judi important baatein samajhna aur apne experience se seekhna
+      hamesha helpful hota hai.
+    </p>
+
+    <p>💡 Aapka ${topic} se related experience kya hai?</p>
+
+    <p><b>#${topic.replace(/\s+/g, "")} #LoveLife</b></p>
+  `;
+}
+
+async function loadAdminReports() {
+  const box = $("adminReports");
+
+  box.innerHTML = "Loading reports...";
+
+  try {
+    const response = await fetch("/api/admin/reports", {
+      headers: {
+        Authorization: token
+      }
+    });
+
+    const reports = await response.json();
+
+    if (!response.ok) {
+      box.innerHTML =
+        "❌ Reports load nahi ho paaye.";
+      return;
+    }
+
+    if (reports.length === 0) {
+      box.innerHTML =
+        "<p>✅ Koi pending report nahi hai.</p>";
+      return;
+    }
+
+    box.innerHTML = reports.map(report => `
+      <div class="card">
+        <b>🚨 Report #${report.id}</b>
+
+        <p>
+          Reporter: @${escapeHTML(report.reporter)}
+        </p>
+
+        <p>
+          Reason: ${escapeHTML(report.reason)}
+        </p>
+
+        <p>
+          Target: ${report.target_type} #${report.target_id}
+        </p>
+
+        <button onclick="handleAdminReport(${report.id})">
+          ✅ Handle Report
+        </button>
+      </div>
+    `).join("");
+
+  } catch (error) {
+    box.innerHTML =
+      "❌ Server error.";
+  }
+}
+
+async function loadAdminReports() {
+  const box = $("adminReports");
+
+  box.innerHTML = "Loading reports...";
+
+  try {
+    const response = await fetch("/api/admin/reports", {
+      headers: {
+        Authorization: token
+      }
+    });
+
+    const reports = await response.json();
+
+    if (!response.ok) {
+      box.innerHTML =
+        "❌ Reports load nahi ho paaye.";
+      return;
+    }
+
+    if (reports.length === 0) {
+      box.innerHTML =
+        "<p>✅ Koi pending report nahi hai.</p>";
+      return;
+    }
+
+    box.innerHTML = reports.map(report => `
+      <div class="card">
+        <b>🚨 Report #${report.id}</b>
+
+        <p>
+          Reporter: @${escapeHTML(report.reporter)}
+        </p>
+
+        <p>
+          Reason: ${escapeHTML(report.reason)}
+        </p>
+
+        <p>
+          Target: ${report.target_type} #${report.target_id}
+        </p>
+
+        <button onclick="handleAdminReport(${report.id})">
+          ✅ Handle Report
+        </button>
+      </div>
+    `).join("");
+
+  } catch (error) {
+    box.innerHTML =
+      "❌ Server error.";
+  }
+}
+
+async function handleAdminReport(reportId) {
+  try {
+    const response = await fetch(
+      "/api/admin/reports/" + reportId,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: token
+        }
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      alert(result.message || "Report handle nahi hui.");
+      return;
+    }
+
+    alert("✅ Report handled.");
+
+    loadAdminReports();
+
+  } catch (error) {
+    alert("❌ Server error.");
+  }
+}
+
+</script>
+
+<div id="referralSection" class="card">
+  <h3>🎁 My Referral Code</h3>
+  
+</div>
+
+<div id="badges" class="page">
+
+  <h2>🏅 Badges & Achievements</h2>
+
+  <div id="badgesList">
+
+    <div class="badge locked">
+      📝 First Post
+      <small>Make your first post</small>
+    </div>
+
+    <div class="badge locked">
+      🏆 10 Posts
+      <small>Make 10 posts</small>
+    </div>
+
+    <div class="badge locked">
+      🔥 25 Posts
+      <small>Make 25 posts</small>
+    </div>
+
+    <div class="badge locked">
+      👑 50 Posts
+      <small>Make 50 posts</small>
+    </div>
+
+  </div>
+
+
+
+  <button onclick="showPage('feed')">
+    Back to Home
+  </button>
+
+</div>
+
+
+
+</body>
+</html>
