@@ -8,15 +8,6 @@ const app = express();
 const PORT = 3000;
 
 const ADMIN_USERNAME = "LOVEKUSH76";
-const bcrypt = require("bcryptjs");
-const path = require("path");
-const { DatabaseSync } = require("node:sqlite");
-const crypto = require("crypto");
-
-const app = express();
-const PORT = 3000;
-
-const ADMIN_USERNAME = "LOVEKUSH76";
 
 function isAdmin(user) {
   return user && user.username === ADMIN_USERNAME;
