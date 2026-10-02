@@ -25,7 +25,7 @@ app.use(express.static(__dirname));
 app.disable("x-powered-by");
 
 
-const db = new DatabaseSync(
+
   path.join(__dirname, "love-life.db")
 );
 
