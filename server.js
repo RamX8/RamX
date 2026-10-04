@@ -3786,7 +3786,7 @@ app.get("/api/users/:id/status", (req, res) => {
   });
 });
 
-const typingUsers = new Map();
+
 
 app.post("/api/messages/typing", (req, res) => {
 
