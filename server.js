@@ -2124,8 +2124,6 @@ CREATE TABLE IF NOT EXISTS waitlist (
 );
 `);
 
-const sessions = new Map();
-
 try {
   db.exec(`
     ALTER TABLE users
