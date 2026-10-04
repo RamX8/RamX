@@ -1982,9 +1982,7 @@ try {
   // media column already exists
 }
 
-const db = new DatabaseSync(
-  path.join(__dirname, "love-life.db")
-);
+
 
 try {
   db.exec(`
