@@ -13,7 +13,7 @@ function isAdmin(user) {
   return user && user.username === ADMIN_USERNAME;
 }
 
-app.use(express.json({ limit: "2mb" }));
+app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
